@@ -3,356 +3,536 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGE - Sistema de Gestão de Estoque ConstruForte</title>
+    <title>SGE | Gestão Inteligente de Estoque</title>
+    
+    <!-- Fonte Inter (Padrão de Apps Modernos) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Ícones Phosphor (Modernos e Limpos) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
     <style>
         :root {
-            --primary: #0f172a;
-            --accent: #ea580c; /* Laranja construção */
-            --bg: #f1f5f9;
-            --card: #ffffff;
+            /* Paleta de Cores Profissional */
+            --primary: #4f46e5; /* Indigo */
+            --primary-hover: #4338ca;
+            --secondary: #0f172a; /* Slate Dark */
+            --background: #f1f5f9; /* Slate Light */
+            --surface: #ffffff;
             --border: #e2e8f0;
-            --success: #22c55e;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --success: #10b981;
             --danger: #ef4444;
+            --warning: #f59e0b;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
 
+        * { box-sizing: border-box; }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
             margin: 0;
-            padding: 20px;
-            color: #334155;
+            padding: 40px 20px;
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
-        /* CABEÇALHO */
+        /* HEADER & DASHBOARD */
         header {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 2rem;
-        }
-        header h1 { color: var(--primary); margin: 0; }
-        header p { color: #64748b; margin-top: 5px; }
-
-        /* CARTÃO DO FORMULÁRIO */
-        .card {
-            background: var(--card);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            border-top: 5px solid var(--accent);
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .grid-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-
-        .form-group { display: flex; flex-direction: column; }
         
+        .brand-icon {
+            background: var(--primary);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .brand h1 { margin: 0; font-size: 1.5rem; color: var(--secondary); letter-spacing: -0.5px; }
+        .brand p { margin: 4px 0 0 0; color: var(--text-light); font-size: 0.9rem; }
+
+        .stats-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .stat-number { display: block; font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+
+        /* MAIN CARD */
+        .app-card {
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            background: #f8fafc;
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header h3 { margin: 0; font-size: 1.1rem; color: var(--secondary); }
+
+        .card-body { padding: 30px; }
+
+        /* FORM GRID */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+
         label {
             font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-main);
         }
 
         input, select {
-            padding: 0.8rem;
+            padding: 12px 16px;
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
-            transition: 0.2s;
+            color: var(--secondary);
+            transition: all 0.2s ease;
+            background: #f8fafc;
         }
 
         input:focus, select:focus {
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
         }
 
-        /* CHECKLIST VISUAL */
-        .checklist-box {
+        /* SECTION SEPARATORS */
+        .divider {
             grid-column: 1 / -1;
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px dashed #cbd5e1;
+            margin: 10px 0;
+            border-top: 1px solid var(--border);
+            position: relative;
+        }
+        
+        .divider span {
+            position: absolute;
+            top: -10px;
+            left: 0;
+            background: var(--surface);
+            padding-right: 15px;
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* CHECKLIST DESIGN */
+        .checklist-wrapper {
+            grid-column: 1 / -1;
+            background: #f0fdf4; /* Light Green bg */
+            border: 1px dashed #86efac;
+            padding: 20px;
+            border-radius: 10px;
             display: flex;
-            gap: 20px;
+            gap: 30px;
             flex-wrap: wrap;
         }
 
-        .check-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
-        input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--success); }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
 
-        /* BOTÕES */
-        .btn-group {
+        .checkbox-container input { width: 20px; height: 20px; accent-color: var(--success); cursor: pointer; margin: 0; }
+        .checkbox-container span { font-size: 0.95rem; font-weight: 500; color: #166534; }
+
+        /* BUTTONS */
+        .action-bar {
             grid-column: 1 / -1;
             display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
+            gap: 15px;
+            margin-top: 10px;
         }
 
         .btn {
-            padding: 1rem 2rem;
+            padding: 14px 28px;
+            border-radius: 8px;
             border: none;
-            border-radius: 6px;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 1rem;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.1s, box-shadow 0.2s;
             flex: 1;
-            transition: 0.2s;
         }
 
-        .btn-primary { background-color: var(--primary); color: white; }
-        .btn-primary:hover { background-color: #1e293b; }
+        .btn:active { transform: translateY(2px); }
 
-        .btn-success { background-color: var(--success); color: white; display: none;} /* Escondido até ter dados */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-primary:hover { box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4); }
+
+        .btn-secondary {
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
         
-        /* TABELA DE RESULTADOS */
-        .table-container {
-            overflow-x: auto;
-            background: var(--card);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            padding: 1rem;
+        .btn-secondary:hover { background: #f8fafc; border-color: var(--text-light); }
+
+        /* TABLE DESIGN */
+        .table-wrapper {
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            overflow: hidden;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-
+        table { width: 100%; border-collapse: collapse; }
+        
         th {
-            background-color: #f1f5f9;
-            color: var(--primary);
-            padding: 1rem;
+            background: #f8fafc;
             text-align: left;
+            padding: 16px 24px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
             font-weight: 700;
-        }
-
-        td {
-            padding: 1rem;
             border-bottom: 1px solid var(--border);
         }
 
-        tr:hover { background-color: #f8fafc; }
-
-        /* Badges de Status */
-        .badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
+        td {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-main);
         }
-        .bg-ok { background: #dcfce7; color: #166534; }
-        .bg-alert { background: #fee2e2; color: #991b1b; }
 
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f8fafc; }
+
+        /* STATUS BADGES */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .status-ok { background: #dcfce7; color: #15803d; }
+        .status-warn { background: #fee2e2; color: #b91c1c; }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .stats-container { width: 100%; }
+            .stat-card { flex: 1; }
+            .action-bar { flex-direction: column; }
+            .table-wrapper { overflow-x: auto; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>🏗️ SGE - Controle de Recebimento</h1>
-            <p>Automação de Entrada de Materiais - Depósito ConstruForte</p>
-        </header>
+<div class="container">
+    
+    <!-- Header com Logo e Estatísticas -->
+    <header>
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="ph ph-cube"></i>
+            </div>
+            <div>
+                <h1>SGE 2.0</h1>
+                <p>Sistema de Gestão de Estoque</p>
+            </div>
+        </div>
 
-        <!-- CARTÃO DE CADASTRO -->
-        <div class="card">
+        <div class="stats-container">
+            <div class="stat-card">
+                <span class="stat-number" id="countTotal">0</span>
+                <span class="stat-label">Itens Recebidos</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" style="color: var(--success);" id="countOk">0</span>
+                <span class="stat-label">Aprovados</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Formulário Principal -->
+    <div class="app-card">
+        <div class="card-header">
+            <i class="ph ph-list-plus" style="font-size: 1.2rem; color: var(--primary);"></i>
+            <h3>Novo Registro de Entrada</h3>
+        </div>
+        <div class="card-body">
             <form id="stockForm">
-                <div class="grid-form">
+                <div class="form-grid">
                     
-                    <!-- Linha 1 -->
-                    <div class="form-group">
-                        <label>SKU / Código</label>
-                        <input type="text" id="sku" placeholder="Ex: CIM-001" required>
+                    <div class="divider"><span>Dados da Nota Fiscal</span></div>
+
+                    <div class="input-group">
+                        <label><i class="ph ph-barcode"></i> SKU / Código</label>
+                        <input type="text" id="sku" placeholder="CIM-001" required>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="ph ph-receipt"></i> Nº da Nota (NF-e)</label>
+                        <input type="number" id="nfe" placeholder="000000" required>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="ph ph-storefront"></i> Fornecedor</label>
+                        <input type="text" id="fornecedor" placeholder="Nome do Fornecedor" required>
                     </div>
 
-                    <div class="form-group">
-                        <label>Nota Fiscal (NF-e)</label>
-                        <input type="number" id="nfe" placeholder="Apenas números" required>
-                    </div>
+                    <div class="divider"><span>Detalhes do Produto</span></div>
 
-                    <div class="form-group">
-                        <label>Data de Recebimento</label>
-                        <input type="datetime-local" id="dataRecebimento" required>
-                    </div>
-
-                    <!-- Linha 2 -->
-                    <div class="form-group">
+                    <div class="input-group">
                         <label>Produto</label>
-                        <input type="text" id="produto" placeholder="Nome do material" required>
+                        <input type="text" id="produto" placeholder="Descrição do Material" required>
                     </div>
-
-                    <div class="form-group">
+                    <div class="input-group">
                         <label>Categoria</label>
                         <select id="categoria">
-                            <option value="Basico">Material Básico (Areia/Pedra)</option>
+                            <option value="Basico">Construção (Básico)</option>
                             <option value="Acabamento">Acabamento</option>
                             <option value="Hidraulica">Hidráulica</option>
                             <option value="Eletrica">Elétrica</option>
+                            <option value="Ferramentas">Ferramentas</option>
                         </select>
                     </div>
-
-                    <div class="form-group">
-                        <label>Fornecedor</label>
-                        <input type="text" id="fornecedor" required>
-                    </div>
-
-                    <!-- Linha 3 -->
-                    <div class="form-group">
+                    <div class="input-group">
                         <label>Quantidade</label>
-                        <input type="number" id="qtd" min="1" required>
+                        <input type="number" id="qtd" min="1" placeholder="0" required>
                     </div>
-
-                    <div class="form-group">
-                        <label>Localização (Rua/Prateleira)</label>
-                        <input type="text" id="local" placeholder="Ex: Rua B - Prat. 4" required>
-                    </div>
-
-                    <div class="form-group">
+                    <div class="input-group">
                         <label>Validade (ODS 12)</label>
                         <input type="date" id="validade">
                     </div>
 
-                    <!-- Checklist -->
-                    <div class="checklist-box">
-                        <div class="check-item">
+                    <!-- Checklist Destacado -->
+                    <div class="checklist-wrapper">
+                        <label class="checkbox-container">
                             <input type="checkbox" id="checkConferencia" required>
-                            <label for="checkConferencia">Conferência Física Realizada</label>
-                        </div>
-                        <div class="check-item">
+                            <span><i class="ph ph-check-circle"></i> Conferência Física Realizada</span>
+                        </label>
+                        <label class="checkbox-container" style="color: var(--danger);">
                             <input type="checkbox" id="checkAvarias">
-                            <label for="checkAvarias">Material com Avaria/Defeito?</label>
-                        </div>
+                            <span style="color: var(--text-main);"><i class="ph ph-warning-circle"></i> Identifiquei Avaria/Defeito</span>
+                        </label>
                     </div>
 
-                    <!-- Botões -->
-                    <div class="btn-group">
-                        <button type="submit" class="btn btn-primary">➕ Registrar Entrada</button>
-                        <button type="button" id="btnExport" class="btn btn-success" onclick="exportTableToCSV()">📥 Baixar Relatório Completo (.csv)</button>
+                    <!-- Botões de Ação -->
+                    <div class="action-bar">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="ph ph-floppy-disk"></i> Registrar Entrada
+                        </button>
+                        <button type="button" onclick="exportTableToCSV()" class="btn btn-secondary">
+                            <i class="ph ph-download-simple"></i> Baixar Relatório CSV
+                        </button>
                     </div>
 
                 </div>
             </form>
         </div>
+    </div>
 
-        <!-- TABELA DINÂMICA -->
-        <div class="table-container">
-            <table id="tabelaEstoque">
-                <thead>
-                    <tr>
-                        <th>Data/Hora</th>
-                        <th>SKU</th>
-                        <th>Produto</th>
-                        <th>Qtd.</th>
-                        <th>Local</th>
-                        <th>Validade</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- As linhas serão inseridas aqui via JavaScript -->
-                </tbody>
-            </table>
-            <p style="text-align: center; color: #94a3b8; font-size: 0.9rem; margin-top: 1rem;" id="emptyMsg">Nenhum registro adicionado nesta sessão.</p>
+    <!-- Tabela de Registros -->
+    <div class="table-wrapper">
+        <table id="tabelaEstoque">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Produto</th>
+                    <th>Fornecedor</th>
+                    <th>Qtd.</th>
+                    <th>Validade</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Javascript vai preencher aqui -->
+            </tbody>
+        </table>
+        <div id="emptyState" style="padding: 40px; text-align: center; color: var(--text-light);">
+            <i class="ph ph-tray" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;"></i>
+            <p>Nenhum registro adicionado hoje.</p>
         </div>
     </div>
 
-    <script>
-        // Define a data atual no campo automaticamente ao abrir
+</div>
+
+<script>
+    // --- LÓGICA DO SISTEMA --- //
+
+    let dadosEstoque = [];
+    let stats = { total: 0, ok: 0 };
+
+    // Atualiza contadores do Dashboard
+    function updateStats() {
+        document.getElementById('countTotal').innerText = stats.total;
+        document.getElementById('countTotal').style.animation = "pop 0.3s ease";
+        document.getElementById('countOk').innerText = stats.ok;
+    }
+
+    // Evento de Submit
+    document.getElementById('stockForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Captura Data/Hora atual
         const now = new Date();
-        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-        document.getElementById('dataRecebimento').value = now.toISOString().slice(0,16);
+        const dataFormatada = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
 
-        // Armazena os dados temporariamente
-        let dadosEstoque = [];
+        // Objeto Item
+        const item = {
+            data: dataFormatada,
+            sku: document.getElementById('sku').value.toUpperCase(),
+            nfe: document.getElementById('nfe').value,
+            produto: document.getElementById('produto').value,
+            categoria: document.getElementById('categoria').value,
+            fornecedor: document.getElementById('fornecedor').value,
+            qtd: document.getElementById('qtd').value,
+            validade: document.getElementById('validade').value ? new Date(document.getElementById('validade').value).toLocaleDateString('pt-BR') : 'N/A',
+            avaria: document.getElementById('checkAvarias').checked
+        };
 
-        document.getElementById('stockForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Salva e Atualiza Stats
+        dadosEstoque.push(item);
+        stats.total++;
+        if(!item.avaria) stats.ok++;
+        updateStats();
 
-            // 1. Captura valores
-            const item = {
-                data: document.getElementById('dataRecebimento').value.replace('T', ' '),
-                sku: document.getElementById('sku').value.toUpperCase(),
-                nfe: document.getElementById('nfe').value,
-                produto: document.getElementById('produto').value,
-                categoria: document.getElementById('categoria').value,
-                fornecedor: document.getElementById('fornecedor').value,
-                qtd: document.getElementById('qtd').value,
-                local: document.getElementById('local').value,
-                validade: document.getElementById('validade').value || 'N/A',
-                avaria: document.getElementById('checkAvarias').checked
-            };
+        // Renderiza
+        renderTable(item);
 
-            // 2. Adiciona ao Array
-            dadosEstoque.push(item);
+        // Limpa formulário inteligente (mantém fornecedor/nota para agilizar)
+        document.getElementById('sku').value = '';
+        document.getElementById('produto').value = '';
+        document.getElementById('qtd').value = '';
+        document.getElementById('checkAvarias').checked = false;
+        document.getElementById('checkConferencia').checked = false;
+        document.getElementById('sku').focus();
+    });
 
-            // 3. Renderiza na Tabela (Front-End Dinâmico)
-            adicionarLinhaTabela(item);
+    function renderTable(item) {
+        document.getElementById('emptyState').style.display = 'none';
+        const tbody = document.querySelector('#tabelaEstoque tbody');
+        
+        const tr = document.createElement('tr');
+        
+        // Badge Lógica
+        const statusHtml = item.avaria 
+            ? `<span class="status-badge status-warn"><i class="ph ph-warning"></i> Avaria</span>`
+            : `<span class="status-badge status-ok"><i class="ph ph-check"></i> Aprovado</span>`;
 
-            // 4. Limpa campos chave
-            document.getElementById('sku').value = '';
-            document.getElementById('produto').value = '';
-            document.getElementById('qtd').value = '';
-            document.getElementById('produto').focus();
+        tr.innerHTML = `
+            <td><strong>${item.data}</strong></td>
+            <td>
+                <div style="font-weight: 600; color: var(--secondary)">${item.produto}</div>
+                <div style="font-size: 0.8rem; color: var(--text-light)">SKU: ${item.sku}</div>
+            </td>
+            <td>${item.fornecedor}<br><span style="font-size: 0.8rem; color: var(--text-light)">NF: ${item.nfe}</span></td>
+            <td style="font-weight: bold;">${item.qtd}</td>
+            <td>${item.validade}</td>
+            <td>${statusHtml}</td>
+        `;
 
-            // Mostra botão de exportar
-            document.getElementById('btnExport').style.display = 'block';
-            document.getElementById('emptyMsg').style.display = 'none';
+        // Animação de entrada
+        tr.style.animation = "fadeIn 0.5s ease";
+        tbody.insertBefore(tr, tbody.firstChild);
+    }
+
+    function exportTableToCSV() {
+        if(dadosEstoque.length === 0) {
+            alert("Não há dados para exportar!");
+            return;
+        }
+        
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Data;SKU;Produto;Fornecedor;NF;Qtd;Categoria;Validade;Status\n";
+
+        dadosEstoque.forEach(row => {
+            let status = row.avaria ? "COM AVARIA" : "APROVADO";
+            let rowString = `${row.data};${row.sku};${row.produto};${row.fornecedor};${row.nfe};${row.qtd};${row.categoria};${row.validade};${status}`;
+            csvContent += rowString + "\n";
         });
 
-        function adicionarLinhaTabela(item) {
-            const tbody = document.querySelector('#tabelaEstoque tbody');
-            const tr = document.createElement('tr');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `Relatorio_Estoque_${new Date().toISOString().slice(0,10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+    }
 
-            // Lógica de Status (Visual)
-            const statusBadge = item.avaria 
-                ? '<span class="badge bg-alert">AVARIA</span>' 
-                : '<span class="badge bg-ok">APROVADO</span>';
+    // Animações CSS via JS
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = `
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+    `;
+    document.head.appendChild(styleSheet);
 
-            tr.innerHTML = `
-                <td>${item.data}</td>
-                <td><strong>${item.sku}</strong></td>
-                <td>
-                    ${item.produto}<br>
-                    <small style="color:#64748b">${item.fornecedor} (NF: ${item.nfe})</small>
-                </td>
-                <td>${item.qtd}</td>
-                <td>${item.local}</td>
-                <td>${item.validade}</td>
-                <td>${statusBadge}</td>
-            `;
-
-            // Adiciona no topo da tabela
-            tbody.insertBefore(tr, tbody.firstChild);
-        }
-
-        // Função para Gerar Excel/CSV de TUDO
-        function exportTableToCSV() {
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Data;SKU;Produto;Fornecedor;NF;Qtd;Local;Validade;Status\n";
-
-            dadosEstoque.forEach(function(row) {
-                let status = row.avaria ? "COM AVARIA" : "OK";
-                let rowString = `${row.data};${row.sku};${row.produto};${row.fornecedor};${row.nfe};${row.qtd};${row.local};${row.validade};${status}`;
-                csvContent += rowString + "\n";
-            });
-
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "Relatorio_Estoque_Completo.csv");
-            document.body.appendChild(link);
-            link.click();
-        }
-    </script>
+</script>
 </body>
 </html>
